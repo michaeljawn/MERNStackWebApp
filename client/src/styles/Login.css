@@ -1,0 +1,90 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #0f0f14;
+    color: #f5f5f5;
+}
+
+#login-container {
+    max-width: 420px;
+    margin: 80px auto;
+    padding: 32px;
+    background: #181824;
+    border: 1px solid #2a2a3a;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+#login-title {
+    margin: 0 0 24px 0;
+    text-align: center;
+    font-size: 32px;
+    color: #ffffff;
+}
+
+#login-form {
+    display: flex;
+    flex-direction: column;
+}
+
+#username-container,
+#password-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+label {
+    font-size: 14px;
+    color: #cfcfe6;
+}
+
+#username,
+#password {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 15px;
+    color: #ffffff;
+    background: #10101a;
+    border: 1px solid #34344a;
+    border-radius: 10px;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#username:focus,
+#password:focus {
+    border-color: #7c5cff;
+    box-shadow: 0 0 0 3px rgba(124, 92, 255, 0.2);
+}
+
+#add-user-button,
+#login-button {
+    width: 100%;
+    padding: 12px;
+    font-size: 15px;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.15s ease, opacity 0.15s ease, background 0.2s ease;
+}
+
+#add-user-button {
+    margin-bottom: 18px;
+    background: #2c2c3d;
+    color: #f5f5f5;
+}
+
+#login-button {
+    background: linear-gradient(135deg, #7c5cff, #5b8cff);
+    color: white;
+}
+
+#message {
+    margin-top: 18px;
+    text-align: center;
+    font-size: 14px;
+    color: #b8b8d4;
+    min-height: 20px;
+}
