@@ -1,4 +1,4 @@
-# MERNStackWebApp
+# D&D Character Creator
 MERN-Stack Web Application // CIS4004
 
 ---
