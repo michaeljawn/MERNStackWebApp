@@ -1,5 +1,5 @@
 # D&D Character Creator
-MERN-Stack Web Application // CIS4004
+MERN-Stack Web Application // CIS4004 - Web-Based Information Technology @ UCF
 
 ---
 
