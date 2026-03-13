@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import "../styles/Dashboard.css";
+import character from "../assets/character-add.svg";
 
 function Dashboard() {
     const navigate = useNavigate();
@@ -17,8 +19,11 @@ function Dashboard() {
 
     return (
         <div>
-            <h1>Dashboard</h1>
-            <p>You are logged in.</p>
+            <h1>D&D Dashboard</h1>
+            <p>Welcome to your dashboard!</p>
+            <button onClick={() => alert('Button clicked!')}>
+                <img src={character} alt="description of button action" />
+            </button>
         </div>
     );
 }
