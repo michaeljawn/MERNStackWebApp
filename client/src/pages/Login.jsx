@@ -1,12 +1,43 @@
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "../styles/Login.css";
 
-function Login({ goToDashboard }) {
+function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
 
+  const navigate = useNavigate();
 
+
+  function handleLogin(e) {
+    e.preventDefault();
+    if (!username || !password) {
+      setMessage("Please enter a username and password");
+      return;
+    }
+    fetch("http://localhost:8080/login", {
+      method: "POST",
+      credentials: "include",
+      body: JSON.stringify({ username, password }),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.text())
+      .then((data) => {
+        console.log(data);
+        setMessage(data);
+        if (data === "Login successful") {
+          navigate("/dashboard");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        setMessage("Error logging in");
+      });
+  }
 
   function addUser() {
     if (!username || !password) {
@@ -15,6 +46,7 @@ function Login({ goToDashboard }) {
     }
     fetch("http://localhost:8080/users", {
       method: "POST",
+      credentials: "include",
       body: JSON.stringify({ username, password }),
       headers: {
         Accept: "application/json",
@@ -29,34 +61,6 @@ function Login({ goToDashboard }) {
       .catch((error) => {
         console.log(error);
         setMessage("Error adding user");
-      });
-  }
-
-  function handleLogin(e) {
-    e.preventDefault();
-    if (!username || !password) {
-      setMessage("Please enter a username and password");
-      return;
-    }
-    fetch("http://localhost:8080/login", {
-      method: "POST",
-      body: JSON.stringify({ username, password }),
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.text())
-      .then((data) => {
-        console.log(data);
-        setMessage(data);
-        if (data === "Login successful") {
-          goToDashboard();
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        setMessage("Error logging in");
       });
   }
 
