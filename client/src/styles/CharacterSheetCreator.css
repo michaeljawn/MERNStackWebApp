@@ -1,3 +1,47 @@
 section{
     border: 2px, solid, blue;
 }
+
+.characterCreator div {
+    display: flex;
+}
+
+input,  select{
+    width: 100%;
+    height: 32px;
+}
+
+.horizontalSplit{
+    display: flex;  
+}
+
+.identity{
+    flex: 1;
+}
+.stats_1{
+    flex: 2;
+}
+
+.identity {
+  display: grid;
+  grid-template-columns: max-content 1fr; 
+  row-gap: 12px;    
+  column-gap: 20px;   
+  align-items: center; 
+  padding: 10px;
+}
+.identity > div {
+  display: contents; 
+}
+
+.identity > div > p {
+  justify-self: end; 
+  margin: 0;   
+  padding-right: 0;
+}
+
+.identity > div > input,
+.identity > div > select {
+  width: 100%;       
+  box-sizing: border-box;
+}   
