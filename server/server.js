@@ -4,6 +4,7 @@ const cors = require("cors");
 const session = require("express-session");
 const { MongoClient } = require("mongodb");
 const bcrypt = require("bcrypt");
+const { ObjectId } = require("mongodb");
 require("dotenv").config();
 
 const app = express();
@@ -214,5 +215,165 @@ async function connectDB() {
   }
 
 }
+
+// GET ALL CAMPAIGNS FOR LOGGED-IN USER
+app.get("/campaigns", async (req, res) => {
+  if (!db) return res.status(500).send("Database not connected");
+  if (!req.session.user) return res.status(401).send("Not logged in");
+
+  try {
+    const collection = db.collection("Campaigns");
+    const campaigns = await collection
+      .find({ userId: req.session.user.id.toString() })
+      .toArray();
+    res.json(campaigns);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Error fetching campaigns");
+  }
+});
+
+
+// GET A SINGLE CAMPAIGN BY ID
+app.get("/campaigns/:id", async (req, res) => {
+  if (!db) return res.status(500).send("Database not connected");
+  if (!req.session.user) return res.status(401).send("Not logged in");
+
+  try {
+    const collection = db.collection("Campaigns");
+    const campaign = await collection.findOne({
+      _id: new ObjectId(req.params.id),
+      userId: req.session.user.id.toString(),
+    });
+
+    if (!campaign) return res.status(404).send("Campaign not found");
+    res.json(campaign);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Error fetching campaign");
+  }
+});
+
+
+// CREATE A NEW CAMPAIGN
+app.post("/campaigns", async (req, res) => {
+  if (!db) return res.status(500).send("Database not connected");
+  if (!req.session.user) return res.status(401).send("Not logged in");
+
+  try {
+    const { name, dmName, description, setting } = req.body;
+
+    if (!name) return res.status(400).send("Campaign name is required");
+
+    const collection = db.collection("Campaigns");
+    const result = await collection.insertOne({
+      userId: req.session.user.id.toString(),
+      name,
+      dmName: dmName || "",
+      description: description || "",
+      setting: setting || "",
+      sessionNotes: [],
+      partyMembers: [],
+      createdAt: new Date(),
+    });
+
+    res.json({ message: "Campaign created", id: result.insertedId });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Error creating campaign");
+  }
+});
+
+
+// UPDATE A CAMPAIGN
+app.put("/campaigns/:id", async (req, res) => {
+  if (!db) return res.status(500).send("Database not connected");
+  if (!req.session.user) return res.status(401).send("Not logged in");
+
+  try {
+    const { name, dmName, description, setting, sessionNotes, partyMembers } = req.body;
+    const collection = db.collection("Campaigns");
+
+    const result = await collection.updateOne(
+      {
+        _id: new ObjectId(req.params.id),
+        userId: req.session.user.id.toString(),
+      },
+      {
+        $set: {
+          ...(name && { name }),
+          ...(dmName !== undefined && { dmName }),
+          ...(description !== undefined && { description }),
+          ...(setting !== undefined && { setting }),
+          ...(sessionNotes !== undefined && { sessionNotes }),
+          ...(partyMembers !== undefined && { partyMembers }),
+          updatedAt: new Date(),
+        },
+      }
+    );
+
+    if (result.matchedCount === 0) return res.status(404).send("Campaign not found");
+    res.json({ message: "Campaign updated" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Error updating campaign");
+  }
+});
+
+
+// DELETE A CAMPAIGN
+app.delete("/campaigns/:id", async (req, res) => {
+  if (!db) return res.status(500).send("Database not connected");
+  if (!req.session.user) return res.status(401).send("Not logged in");
+
+  try {
+    const collection = db.collection("Campaigns");
+    const result = await collection.deleteOne({
+      _id: new ObjectId(req.params.id),
+      userId: req.session.user.id.toString(),
+    });
+
+    if (result.deletedCount === 0) return res.status(404).send("Campaign not found");
+    res.json({ message: "Campaign deleted" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Error deleting campaign");
+  }
+});
+
+
+// ADD A SESSION NOTE TO A CAMPAIGN
+app.post("/campaigns/:id/notes", async (req, res) => {
+  if (!db) return res.status(500).send("Database not connected");
+  if (!req.session.user) return res.status(401).send("Not logged in");
+
+  try {
+    const { note } = req.body;
+    if (!note) return res.status(400).send("Note is required");
+
+    const collection = db.collection("Campaigns");
+    const result = await collection.updateOne(
+      {
+        _id: new ObjectId(req.params.id),
+        userId: req.session.user.id.toString(),
+      },
+      {
+        $push: {
+          sessionNotes: {
+            id: new ObjectId().toString(),
+            text: note,
+            createdAt: new Date(),
+          },
+        },
+      }
+    );
+
+    if (result.matchedCount === 0) return res.status(404).send("Campaign not found");
+    res.json({ message: "Note added" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Error adding note");
+  }
+});
 
 connectDB();

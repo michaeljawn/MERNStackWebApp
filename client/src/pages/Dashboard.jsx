@@ -6,6 +6,7 @@ import character from "../assets/character-add.svg";
 function Dashboard() {
     const navigate = useNavigate();
     const [characters, setCharacters] = useState([]);
+    const [campaigns, setCampaigns] = useState([]);
 
     useEffect(() => {
         fetch("http://localhost:8080/check-login", { credentials: "include" })
@@ -15,6 +16,11 @@ function Dashboard() {
             .then((res) => res.json())
             .then((data) => setCharacters(data))
             .catch((err) => console.log("Error fetching characters:", err));
+
+        fetch("http://localhost:8080/campaigns", { credentials: "include" })
+            .then((res) => res.json())
+            .then((data) => setCampaigns(data))
+            .catch((err) => console.log("Error fetching campaigns:", err));
     }, []);
 
     const handleDelete = async (id) => {
@@ -47,7 +53,7 @@ function Dashboard() {
                 <span className="nav-logo">⚔ Realm</span>
                 <ul className="nav-links">
                     <li><button className="nav-link active">Characters</button></li>
-                    <li><button className="nav-link">Campaign</button></li>
+                    <li><button className="nav-link" onClick={() => navigate("/campaigns")}>Campaign</button></li>
                     <li><button className="nav-link">Spells</button></li>
                     <li><button className="nav-link" onClick={() => navigate("/")}>Logout</button></li>
                 </ul>
@@ -86,7 +92,7 @@ function Dashboard() {
                         <span className="stat-label">Classes</span>
                     </div>
                     <div className="stat-card">
-                        <span className="stat-value">0</span>
+                        <span className="stat-value">{campaigns.length}</span>
                         <span className="stat-label">Campaigns</span>
                     </div>
                 </div>
