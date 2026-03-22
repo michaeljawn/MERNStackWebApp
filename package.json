@@ -1,0 +1,12 @@
+{
+  "name": "mernstackwebapp",
+  "private": true,
+  "scripts": {
+    "server": "node .\\server\\server.js",
+    "client": "npm run dev --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0"
+  }
+}
