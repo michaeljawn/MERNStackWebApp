@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../styles/CharacterSheetCreator.css";
 
 export default function CharacterSheetCreator() {
+    const navigate = useNavigate();
 
     const [character_name, setCharacterName] = useState("");
 
@@ -211,7 +213,7 @@ export default function CharacterSheetCreator() {
             </div>
 
             <div className="form-actions">
-                <button className="btn-cancel">Cancel</button>
+                <button className="btn-cancel" onClick={() => navigate("/dashboard")}>Cancel</button>
                 <button className="btn-save">Save Character</button>
             </div>
 

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../utils/auth";
+import "../styles/CharacterSheetCreator.css";
 
 const SETTINGS = [
     "Forgotten Realms", "Eberron", "Ravenloft", "Greyhawk",

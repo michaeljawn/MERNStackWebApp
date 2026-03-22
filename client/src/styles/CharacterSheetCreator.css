@@ -1,6 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Metamorphous&family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;700&family=IM+Fell+English:ital@0;1&display=swap');
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -10,7 +12,7 @@
 .characterCreator {
     min-height: 100vh;
     background:
-        radial-gradient(ellipse at 50% 0%, rgba(139,0,0,0.15) 0%, transparent 60%),
+        radial-gradient(ellipse at 50% 0%, rgba(139, 0, 0, 0.15) 0%, transparent 60%),
         #0c0b0b;
     color: #e5e7eb;
     font-family: 'IM Fell English', Georgia, serif;
@@ -21,7 +23,7 @@
 .creator-header {
     text-align: center;
     padding: 48px 24px 32px;
-    border-bottom: 1px solid rgba(139,0,0,0.3);
+    border-bottom: 1px solid rgba(139, 0, 0, 0.3);
     position: relative;
 }
 
@@ -51,7 +53,7 @@
     font-weight: 400;
     color: #fff;
     text-shadow:
-        0 0 40px rgba(220,38,38,0.5),
+        0 0 40px rgba(220, 38, 38, 0.5),
         2px 2px 0px #1a0000;
     letter-spacing: 0.05em;
 }
@@ -95,8 +97,8 @@
 /* ── PANELS ── */
 .identity-panel,
 .stats-panel {
-    background: rgba(255,255,255,0.02);
-    border: 1px solid rgba(139,0,0,0.25);
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(139, 0, 0, 0.25);
     border-radius: 6px;
     padding: 28px;
 }
@@ -109,7 +111,7 @@
     color: #9ca3af;
     margin-bottom: 20px;
     padding-bottom: 10px;
-    border-bottom: 1px solid rgba(139,0,0,0.2);
+    border-bottom: 1px solid rgba(139, 0, 0, 0.2);
 }
 
 .secondary-title {
@@ -138,9 +140,10 @@
 }
 
 .field input,
+textarea,
 .field select {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(139,0,0,0.3);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(139, 0, 0, 0.3);
     border-radius: 3px;
     color: #e5e7eb;
     font-family: 'IM Fell English', serif;
@@ -152,9 +155,10 @@
 }
 
 .field input:focus,
+textarea,
 .field select:focus {
-    border-color: rgba(220,38,38,0.6);
-    background: rgba(139,0,0,0.06);
+    border-color: rgba(220, 38, 38, 0.6);
+    background: rgba(139, 0, 0, 0.06);
 }
 
 .field input::placeholder {
@@ -187,16 +191,16 @@
     flex-direction: column;
     align-items: center;
     gap: 6px;
-    background: rgba(255,255,255,0.02);
-    border: 1px solid rgba(139,0,0,0.2);
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(139, 0, 0, 0.2);
     border-radius: 4px;
     padding: 12px 8px;
     transition: border-color 0.2s, background 0.2s;
 }
 
 .stat-box:hover {
-    border-color: rgba(220,38,38,0.4);
-    background: rgba(139,0,0,0.05);
+    border-color: rgba(220, 38, 38, 0.4);
+    background: rgba(139, 0, 0, 0.05);
 }
 
 .stat-box label {
@@ -210,8 +214,8 @@
 
 .stat-box input,
 .stat-box select {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(139,0,0,0.25);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(139, 0, 0, 0.25);
     border-radius: 3px;
     color: #e5e7eb;
     font-family: 'Cinzel', serif;
@@ -226,7 +230,7 @@
 
 .stat-box input:focus,
 .stat-box select:focus {
-    border-color: rgba(220,38,38,0.6);
+    border-color: rgba(220, 38, 38, 0.6);
 }
 
 .stat-box select option {
@@ -257,7 +261,7 @@
     text-transform: uppercase;
     color: #6b7280;
     background: none;
-    border: 1px solid rgba(255,255,255,0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 3px;
     padding: 10px 24px;
     cursor: pointer;
@@ -266,17 +270,18 @@
 
 .btn-cancel:hover {
     color: #e5e7eb;
-    border-color: rgba(255,255,255,0.3);
+    border-color: rgba(255, 255, 255, 0.3);
 }
 
-.btn-save {
+.btn-save,
+.btn-new {
     font-family: 'Cinzel', serif;
     font-size: 0.65rem;
     letter-spacing: 0.3em;
     text-transform: uppercase;
     color: #fff;
-    background: rgba(139,0,0,0.5);
-    border: 1px solid rgba(220,38,38,0.5);
+    background: rgba(139, 0, 0, 0.5);
+    border: 1px solid rgba(220, 38, 38, 0.5);
     border-radius: 3px;
     padding: 10px 28px;
     cursor: pointer;
@@ -284,6 +289,6 @@
 }
 
 .btn-save:hover {
-    background: rgba(139,0,0,0.75);
-    border-color: rgba(220,38,38,0.8);
+    background: rgba(139, 0, 0, 0.75);
+    border-color: rgba(220, 38, 38, 0.8);
 }
