@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { logout } from "../utils/auth";
 
 const SETTINGS = [
     "Forgotten Realms", "Eberron", "Ravenloft", "Greyhawk",
@@ -23,10 +24,13 @@ function Campaigns() {
     const [editForm, setEditForm] = useState({});
 
     useEffect(() => {
-        fetch("http://localhost:8080/check-login", { credentials: "include" })
-            .then((res) => { if (!res.ok) navigate("/"); });
         loadCampaigns();
     }, []);
+
+    async function handleLogout() {
+        await logout();
+        navigate("/");
+    }
 
     const loadCampaigns = () => {
         fetch("http://localhost:8080/campaigns", { credentials: "include" })
@@ -119,7 +123,7 @@ function Campaigns() {
                     <li><button className="nav-link" onClick={() => navigate("/dashboard")}>Characters</button></li>
                     <li><button className="nav-link active">Campaign</button></li>
                     <li><button className="nav-link">Spells</button></li>
-                    <li><button className="nav-link" onClick={() => navigate("/")}>Logout</button></li>
+                    <li><button className="nav-link" onClick={handleLogout}>Logout</button></li>
                 </ul>
             </nav>
 

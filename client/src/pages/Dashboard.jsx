@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { logout } from "../utils/auth";
 import "../styles/Dashboard.css";
 import character from "../assets/character-add.svg";
 
@@ -8,20 +9,10 @@ function Dashboard() {
     const [characters, setCharacters] = useState([]);
     const [campaigns, setCampaigns] = useState([]);
 
-    useEffect(() => {
-        fetch("http://localhost:8080/check-login", { credentials: "include" })
-            .then((res) => { if (!res.ok) navigate("/"); });
-
-        fetch("http://localhost:8080/characters", { credentials: "include" })
-            .then((res) => res.json())
-            .then((data) => setCharacters(data))
-            .catch((err) => console.log("Error fetching characters:", err));
-
-        fetch("http://localhost:8080/campaigns", { credentials: "include" })
-            .then((res) => res.json())
-            .then((data) => setCampaigns(data))
-            .catch((err) => console.log("Error fetching campaigns:", err));
-    }, []);
+    async function handleLogout() {
+        await logout();
+        navigate("/");
+    }
 
     const handleDelete = async (id) => {
         try {
@@ -55,7 +46,7 @@ function Dashboard() {
                     <li><button className="nav-link active">Characters</button></li>
                     <li><button className="nav-link" onClick={() => navigate("/campaigns")}>Campaign</button></li>
                     <li><button className="nav-link">Spells</button></li>
-                    <li><button className="nav-link" onClick={() => navigate("/")}>Logout</button></li>
+                    <li><button className="nav-link" onClick={handleLogout}>Logout</button></li>
                 </ul>
             </nav>
 

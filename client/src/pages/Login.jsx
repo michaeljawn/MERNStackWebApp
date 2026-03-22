@@ -1,5 +1,5 @@
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { login } from "../utils/auth";
 import "../styles/Login.css";
 
 function Login() {
@@ -7,7 +7,6 @@ function Login() {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
 
-  const navigate = useNavigate();
 
 
   function handleLogin(e) {
@@ -16,21 +15,12 @@ function Login() {
       setMessage("Please enter a username and password");
       return;
     }
-    fetch("http://localhost:8080/login", {
-      method: "POST",
-      credentials: "include",
-      body: JSON.stringify({ username, password }),
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.text())
+
+    login(username, password)
       .then((data) => {
-        console.log(data);
         setMessage(data);
-        if (data === "Login successful") {
-          navigate("/dashboard");
+        if (data) {
+          window.location.href = "/dashboard";
         }
       })
       .catch((error) => {
