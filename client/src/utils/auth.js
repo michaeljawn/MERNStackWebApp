@@ -11,7 +11,12 @@ export async function login(username, password) {
         },
     });
 
-    const data = await response.text();
+    if (!response.ok) {
+        const errorData = await response.json();
+        return { success: false, message: errorData.message || "Login failed" };
+    }
+
+    const data = await response.json();
     return data;
 }
 
@@ -25,10 +30,22 @@ export async function logout() {
 }
 
 export async function checkLogin() {
-    const response = await fetch(`${SERVER}/check-login`, {
-        credentials: "include",
-    });
+    try {
+        const response = await fetch(`${SERVER}/check-login`, {
+            credentials: "include",
+        });
 
-    return response.ok;
+        if (!response.ok) {
+            return { loggedIn: false, isAdmin: false };
+        }
+
+        const data = await response.json();
+        return {
+            loggedIn: data.loggedIn,
+            isAdmin: data.isAdmin,
+        };
+    } catch (error) {
+        return { loggedIn: false, isAdmin: false };
+    }
 }
 

@@ -63,6 +63,7 @@ app.post("/users", async (req, res) => {
     await collection.insertOne({
       username: username,
       password: hashedPassword,
+      role: "user",
     });
 
     res.send("User added successfully");
@@ -120,9 +121,14 @@ app.post("/login", async (req, res) => {
       req.session.user = {
         username: user.username,
         id: user._id,
+        role: user.role === undefined ? "user" : user.role, // Fixes old logins
       };
 
-      res.send("Login successful");
+      res.json({
+        success: true,
+        message: "Login successful",
+        user: req.session.user,
+      });
 
     } else {
       res.status(401).send("Invalid username or password");
@@ -141,12 +147,14 @@ app.get("/check-login", (req, res) => {
   if (req.session.user) {
     res.json({
       loggedIn: true,
+      isAdmin: req.session.user.role === "admin",
       user: req.session.user,
     });
   }
   else {
     res.status(401).json({
       loggedIn: false,
+      isAdmin: false,
     });
   }
 

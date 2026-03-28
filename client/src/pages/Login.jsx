@@ -30,9 +30,18 @@ function Login() {
 
     login(username, password)
       .then((data) => {
-        setMessage(data);
-        if (data) {
-          window.location.href = "/dashboard";
+        // Handle both success and error responses
+        if (data && typeof data === "object" && data.success) {
+          setMessage(data.message);
+          if (data.user && data.user.role === "admin") {
+            window.location.href = "/admin";
+          } else {
+            window.location.href = "/dashboard";
+          }
+        } else if (data && typeof data === "object" && data.message) {
+          setMessage(data.message);
+        } else {
+          setMessage("Login failed");
         }
       })
       .catch((error) => {
