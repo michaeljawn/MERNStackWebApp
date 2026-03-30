@@ -1,0 +1,93 @@
+/* Basic css placeholder */
+ 
+.admin-page {
+    padding: 2rem;
+    font-family: sans-serif;
+}
+ 
+.topnav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+ 
+.nav-links {
+    display: flex;
+    gap: 1rem;
+    list-style: none;
+}
+ 
+.nav-link {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+}
+ 
+.stats-row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+ 
+.stat-card {
+    border: 1px solid #ccc;
+    padding: 1rem;
+    text-align: center;
+    min-width: 120px;
+}
+ 
+.stat-value {
+    display: block;
+    font-size: 2rem;
+    font-weight: bold;
+}
+ 
+.stat-label {
+    display: block;
+    font-size: 0.85rem;
+    color: #666;
+}
+ 
+.tabs {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+ 
+.tab {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 0.4rem 0.8rem;
+    border-bottom: 2px solid transparent;
+}
+ 
+.tab.active {
+    border-bottom: 2px solid black;
+    font-weight: bold;
+}
+ 
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+ 
+.admin-table th,
+.admin-table td {
+    text-align: left;
+    padding: 0.6rem 1rem;
+    border-bottom: 1px solid #ccc;
+}
+ 
+.admin-message {
+    margin-bottom: 1rem;
+    color: green;
+}
+ 
+.action-cell {
+    display: flex;
+    gap: 0.5rem;
+}
