@@ -494,4 +494,186 @@ app.put("/admin/users/:id/promote", requireAdmin, async (req, res) => {
     }
 });
 
+
+
+//////////////////////////////////////////////////
+// CHARCATER
+///////////////////////////////
+
+
+//test // temporary json
+app.get("/test-character", async (req, res) => {
+  if (!db) return res.status(500).send("DB not connected");
+
+  const result = await db.collection("Characters").insertOne({
+  "name": "test character",
+  "level": 1,
+  "hitPoints": {
+    "manualEntry": 10,
+    "constitution": 14
+  },
+  "coreStats": {
+    "strength": 16,
+    "dexterity": 14,
+    "constitution": 14,
+    "intelligence": 10,
+    "wisdom": 14,
+    "charisma": 8
+  },
+  "skills": {
+    "athletics": { "proficient": true },
+    "stealth": { "proficient": false }
+  },
+  "savingThrows": {
+    "strength": { "proficient": false },
+    "dexterity": { "proficient": false },
+    "constitution": { "proficient": false },
+    "intelligence": { "proficient": false },
+    "wisdom": { "proficient": true },
+    "charisma": { "proficient": false }
+  }
+});
+
+  res.json(result);
+});
+
+
+// -------------------------------------------------------------
+
+// CREATE A NEW CHARACTER
+app.post("/characters", async (req, res) => {
+  if (!db) return res.status(500).send("DB not connected");
+  if (!req.session.user) return res.status(401).send("Not logged in");
+
+  try {
+    const { name } = req.body;
+    if (!name) return res.status(400).send("Character name is required");
+
+    const collection = db.collection("Characters");
+    const result = await collection.insertOne({
+      userId: req.session.user.id.toString(),
+      name,
+      campaigns: [], // CAMPAIGN IDS
+      createdAt: new Date(),
+    });
+
+    res.json({ message: "Character created", id: result.insertedId });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Error creating character");
+  }
+});
+
+// GET ALL CHARACTERS FOR LOGGED-IN USER
+app.get("/characters", async (req, res) => {
+  if (!db) return res.status(500).send("DB not connected");
+  if (!req.session.user) return res.status(401).send("Not logged in");
+
+  try {
+    const collection = db.collection("Characters");
+    const characters = await collection
+      .find({ userId: req.session.user.id.toString() })
+      .toArray();
+    res.json(characters);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Error fetching characters");
+  }
+});
+
+// ADD CHARACTER TO A CAMPAIGN
+app.post("/characters/:id/campaigns/:campaignId", async (req, res) => {
+  if (!db) return res.status(500).send("DB not connected");
+  if (!req.session.user) return res.status(401).send("Not logged in");
+
+  try {
+    const charId = req.params.id;
+    const campId = req.params.campaignId;
+
+    const charCollection = db.collection("Characters");
+    const campCollection = db.collection("Campaigns");
+
+    // BOTH NEED TO EXIST
+    const character = await charCollection.findOne({ _id: new ObjectId(charId) });
+    const campaign = await campCollection.findOne({ _id: new ObjectId(campId) });
+
+    if (!character || !campaign) return res.status(404).send("Character or Campaign not found");
+
+    // ADD CAMPAIGN ID
+    await charCollection.updateOne(
+      { _id: new ObjectId(charId) },
+      { $addToSet: { campaigns: campId } }
+    );
+
+    // AD CHARCATER ID IF NOT THERE
+    await campCollection.updateOne(
+      { _id: new ObjectId(campId) },
+      { $addToSet: { characters: charId } }
+    );
+
+    res.json({ message: "Character added to campaign" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Error linking character to campaign");
+  }
+});
+
+// REMOVE CHARACTER FROM A CAMPAIGN
+app.delete("/characters/:id/campaigns/:campaignId", async (req, res) => {
+  if (!db) return res.status(500).send("DB not connected");
+  if (!req.session.user) return res.status(401).send("Not logged in");
+
+  try {
+    const charId = req.params.id;
+    const campId = req.params.campaignId;
+
+    const charCollection = db.collection("Characters");
+    const campCollection = db.collection("Campaigns");
+
+    // REMOVE REFRENCES
+    await charCollection.updateOne(
+      { _id: new ObjectId(charId) },
+      { $pull: { campaigns: campId } }
+    );
+
+    await campCollection.updateOne(
+      { _id: new ObjectId(campId) },
+      { $pull: { characters: charId } }
+    );
+
+    res.json({ message: "Character removed from campaign" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Error unlinking character from campaign");
+  }
+});
+
+// DELETE A CHARACTER
+app.delete("/characters/:id", async (req, res) => {
+  if (!db) return res.status(500).send("DB not connected");
+  if (!req.session.user) return res.status(401).send("Not logged in");
+
+  try {
+    const charId = req.params.id;
+
+    // REMOVE CHARCATER FROM CAMPAIGNS
+    const campCollection = db.collection("Campaigns");
+    await campCollection.updateMany(
+      {},
+      { $pull: { characters: charId } }
+    );
+
+    // DELETE CHARCATER
+    const charCollection = db.collection("Characters");
+    const result = await charCollection.deleteOne({ _id: new ObjectId(charId) });
+
+    if (result.deletedCount === 0) return res.status(404).send("Character not found");
+    res.json({ message: "Character deleted" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Error deleting character");
+  }
+});
+
+
 connectDB();
