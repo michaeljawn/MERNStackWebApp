@@ -384,4 +384,114 @@ app.post("/campaigns/:id/notes", async (req, res) => {
   }
 });
 
+// ADMIN MIDDLEWARE — checks if the logged-in user has role "admin"
+function requireAdmin(req, res, next) {
+    if (!req.session.user) return res.status(401).send("Not logged in");
+    if (req.session.user.role !== "admin") return res.status(403).send("Access denied");
+    next();
+}
+
+// GET ALL USERS (admin only)
+app.get("/admin/users", requireAdmin, async (req, res) => {
+    if (!db) return res.status(500).send("Database not connected");
+    try {
+        const collection = db.collection("Users");
+        const users = await collection
+            .find({}, { projection: { password: 0 } })
+            .toArray();
+        res.json(users);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("Error fetching users");
+    }
+});
+
+// GET ALL CAMPAIGNS ACROSS ALL USERS (admin only)
+app.get("/admin/campaigns", requireAdmin, async (req, res) => {
+    if (!db) return res.status(500).send("Database not connected");
+    try {
+        const campaignsCollection = db.collection("Campaigns");
+        const usersCollection = db.collection("Users");
+
+        const campaigns = await campaignsCollection.find({}).toArray();
+        const users = await usersCollection
+            .find({}, { projection: { _id: 1, username: 1 } })
+            .toArray();
+
+        // Build a map of userId -> username
+        const userMap = {};
+        users.forEach((u) => { userMap[u._id.toString()] = u.username; });
+
+        // Attach ownerUsername to each campaign
+        const enriched = campaigns.map((c) => ({
+            ...c,
+            ownerUsername: userMap[c.userId] || "Unknown",
+        }));
+
+        res.json(enriched);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("Error fetching campaigns");
+    }
+});
+
+// UPDATE ANY CAMPAIGN (admin only)
+app.put("/admin/campaigns/:id", requireAdmin, async (req, res) => {
+    if (!db) return res.status(500).send("Database not connected");
+    try {
+        const { name, dmName, description, setting } = req.body;
+        const collection = db.collection("Campaigns");
+
+        const result = await collection.updateOne(
+            { _id: new ObjectId(req.params.id) },
+            {
+                $set: {
+                    ...(name && { name }),
+                    ...(dmName !== undefined && { dmName }),
+                    ...(description !== undefined && { description }),
+                    ...(setting !== undefined && { setting }),
+                    updatedAt: new Date(),
+                },
+            }
+        );
+
+        if (result.matchedCount === 0) return res.status(404).send("Campaign not found");
+        res.json({ message: "Campaign updated" });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("Error updating campaign");
+    }
+});
+
+// DELETE ANY CAMPAIGN (admin only)
+app.delete("/admin/campaigns/:id", requireAdmin, async (req, res) => {
+    if (!db) return res.status(500).send("Database not connected");
+    try {
+        const collection = db.collection("Campaigns");
+        const result = await collection.deleteOne({ _id: new ObjectId(req.params.id) });
+
+        if (result.deletedCount === 0) return res.status(404).send("Campaign not found");
+        res.json({ message: "Campaign deleted" });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("Error deleting campaign");
+    }
+});
+
+// PROMOTE A USER TO ADMIN (admin only)
+app.put("/admin/users/:id/promote", requireAdmin, async (req, res) => {
+    if (!db) return res.status(500).send("Database not connected");
+    try {
+        const collection = db.collection("Users");
+        await collection.updateOne(
+            { _id: new ObjectId(req.params.id) },
+            { $set: { role: "admin" } }
+        );
+        res.json({ message: "User promoted to admin" });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("Error promoting user");
+    }
+});
+
 connectDB();
