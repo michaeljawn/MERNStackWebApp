@@ -230,11 +230,18 @@ app.get("/campaigns", async (req, res) => {
   if (!req.session.user) return res.status(401).send("Not logged in");
 
   try {
+    const userId = req.session.user.id.toString();
     const collection = db.collection("Campaigns");
     const campaigns = await collection
-      .find({ userId: req.session.user.id.toString() })
+      .find({
+        $or: [
+          { userId: userId },
+          { "members.id": userId } // look if user is  in  capmapign
+        ]
+      })
       .toArray();
     res.json(campaigns);
+    
   } catch (error) {
     console.log(error);
     res.status(500).send("Error fetching campaigns");
@@ -273,19 +280,36 @@ app.post("/campaigns", async (req, res) => {
 
     if (!name) return res.status(400).send("Campaign name is required");
 
+    // Generate a unique 6-character join code
+    const joinCode = Math.random().toString(36).substring(2, 8).toUpperCase();
+    
+    // Get user info from session
+    const userId = req.session.user.id.toString();
+    const username = req.session.user.username;
+
     const collection = db.collection("Campaigns");
     const result = await collection.insertOne({
-      userId: req.session.user.id.toString(),
+      userId: userId,
+      ownerUsername: username,
+      joinCode: joinCode,
       name,
       dmName: dmName || "",
       description: description || "",
       setting: setting || "",
       sessionNotes: [],
-      partyMembers: [],
+      members: [
+        { id: userId, username: username }
+      ],
       createdAt: new Date(),
     });
 
-    res.json({ message: "Campaign created", id: result.insertedId });
+    res.json({ 
+      success: true,
+      message: "Campaign created", 
+      id: result.insertedId, 
+      joinCode: joinCode 
+    });
+
   } catch (error) {
     console.log(error);
     res.status(500).send("Error creating campaign");
@@ -383,6 +407,48 @@ app.post("/campaigns/:id/notes", async (req, res) => {
     res.status(500).send("Error adding note");
   }
 });
+
+
+// JOIN A CAMPAIGN VIA CODE
+app.post("/campaigns/join", async (req, res) => {
+  if (!db) return res.status(500).send("Database not connected");
+  if (!req.session.user) return res.status(401).send("Not logged in");
+
+  try {
+    const { joinCode } = req.body;
+    const userId = req.session.user.id.toString();
+    const username = req.session.user.username;
+
+    if (!joinCode) return res.status(400).send("Join code is required");
+
+    const collection = db.collection("Campaigns");
+    const campaign = await collection.findOne({ joinCode: joinCode.toUpperCase() });
+
+    if (!campaign) {
+      return res.status(404).send("Campaign not found. Check the code.");
+    }
+
+    const isAlreadyMember = campaign.members.some(m => m.id === userId);
+    if (isAlreadyMember) {
+      return res.status(400).send("You are already in this campaign!");
+    }
+
+    await collection.updateOne(
+      { _id: campaign._id },
+      { 
+        $push: { 
+          members: { id: userId, username: username } 
+        } 
+      }
+    );
+    res.json({ message: "Successfully joined!", campaignId: campaign._id });
+
+  } catch (error) {
+    console.error("Error joining campaign:", error);
+    res.status(500).send("Error joining campaign");
+  }
+});
+
 
 // ADMIN MIDDLEWARE — checks if the logged-in user has role "admin"
 function requireAdmin(req, res, next) {

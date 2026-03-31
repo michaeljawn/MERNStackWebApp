@@ -292,3 +292,109 @@ textarea,
     background: rgba(139, 0, 0, 0.75);
     border-color: rgba(220, 38, 38, 0.8);
 }
+
+
+/*campaign stuff*/
+
+.campaign-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(139, 0, 0, 0.25);
+    border-radius: 6px;
+    padding: 24px;
+    margin-bottom: 25px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); 
+    transition: transform 0.2s ease, border-color 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.campaign-card:hover {
+    border-color: rgba(220, 38, 38, 0.5);
+    transform: translateY(-2px);
+    background: rgba(139, 0, 0, 0.03);
+}
+
+.campaign-card h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;      
+    color: #dc2626;          
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    margin: 15px 0 8px 0;    
+    font-weight: 700;
+    opacity: 0.9;
+}
+
+.campaign-name {
+    font-size: 1.4rem !important;
+    color: #fff !important;
+    letter-spacing: 0.05em !important;
+    text-transform: none !important;
+}
+
+.card-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #8b0000, transparent);
+    margin: 25px 0;          
+    border: none;
+    opacity: 0.6;
+}
+
+.campaign-desc {
+    color: #e5e7eb;
+    line-height: 1.6;
+    font-size: 0.95rem;
+    margin-bottom: 15px;
+    font-family: 'IM Fell English', serif;
+}
+
+.code-display {
+    font-family: 'Courier New', monospace;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 8px 15px;
+    border-radius: 3px;
+    color: #fff;
+    border: 1px dashed rgba(220, 38, 38, 0.4);
+    display: inline-block;
+    letter-spacing: 2px;
+}
+
+.members-list {
+    color: #d1d5db;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+.notes-count {
+    font-size: 0.8rem;
+    color: #8b0000;          
+    font-style: italic;
+    margin-top: 10px;
+    font-family: 'Cinzel', serif;
+    letter-spacing: 0.1em;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.card-action.primary {
+    background: rgba(139, 0, 0, 0.5);
+    border: 1px solid rgba(220, 38, 38, 0.5);
+    color: #fff;
+    padding: 8px 20px;
+    border-radius: 3px;
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.card-action.primary:hover {
+    background: rgba(139, 0, 0, 0.75);
+    border-color: rgba(220, 38, 38, 0.8);
+}
