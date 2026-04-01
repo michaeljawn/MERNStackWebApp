@@ -41,7 +41,7 @@ function Dashboard() {
         <div className="dnd-dashboard">
 
             <nav className="topnav">
-                <span className="nav-logo">⚔ Realm</span>
+                <span className="nav-logo">D&D</span>
                 <ul className="nav-links">
                     <li><button className="nav-link active">Characters</button></li>
                     <li><button className="nav-link" onClick={() => navigate("/campaigns")}>Campaign</button></li>
