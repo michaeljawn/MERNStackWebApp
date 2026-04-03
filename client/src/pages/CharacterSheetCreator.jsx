@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import "../styles/common.css";
 import "../styles/CharacterSheetCreator.css";
 
 // ── STANDARD ARRAY (D&D 2024) ──

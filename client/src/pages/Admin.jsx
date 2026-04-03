@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "../styles/common.css";
 import "../styles/Admin.css";
 
 const SETTINGS = [
@@ -110,6 +111,7 @@ function Admin() {
                 <ul className="nav-links">
                     <li><button className="nav-link" onClick={() => navigate("/dashboard")}>Characters</button></li>
                     <li><button className="nav-link" onClick={() => navigate("/campaigns")}>Campaign</button></li>
+                    <li><button className="nav-link">Spells</button></li>
                     <li><button className="nav-link active">Admin</button></li>
                     <li><button className="nav-link" onClick={() => navigate("/")}>Logout</button></li>
                 </ul>

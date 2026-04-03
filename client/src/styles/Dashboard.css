@@ -1,80 +1,21 @@
-@import url('https://fonts.googleapis.com/css2?family=Metamorphous&family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;700&family=IM+Fell+English:ital@0;1&display=swap');
-
-*, *::before, *::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    background: #0a0a0a;
-    color: #e5e7eb;
-    font-family: 'IM Fell English', Georgia, serif;
-    min-height: 100vh;
-}
-
 /* ── DASHBOARD WRAPPER ── */
 .dnd-dashboard {
     min-height: 100vh;
     background:
-        radial-gradient(ellipse at 50% 0%, rgba(139,0,0,0.18) 0%, transparent 60%),
-        radial-gradient(ellipse at 0% 100%, rgba(80,0,0,0.15) 0%, transparent 50%),
-        radial-gradient(ellipse at 100% 100%, rgba(60,60,60,0.12) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 0%, rgba(139, 0, 0, 0.18) 0%, transparent 60%),
+        radial-gradient(ellipse at 0% 100%, rgba(80, 0, 0, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 100% 100%, rgba(60, 60, 60, 0.12) 0%, transparent 50%),
         #0c0b0b;
     position: relative;
     overflow-x: hidden;
 }
 
-/* ── NAV ── */
-.topnav {
-    position: relative;
-    z-index: 10;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 14px 28px;
-    border-bottom: 1px solid rgba(139,0,0,0.2);
-    background: rgba(10,8,8,0.85);
-    backdrop-filter: blur(8px);
-}
-
-.nav-logo {
-    font-family: 'Cinzel Decorative', serif;
-    font-size: 0.75rem;
-    letter-spacing: 0.2em;
-    color: #6b7280;
-    text-transform: uppercase;
-}
-
-.nav-links {
-    display: flex;
-    gap: 28px;
-    list-style: none;
-}
-
-.nav-link {
-    font-family: 'Cinzel', serif;
-    font-size: 0.65rem;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: #6b7280;
-    cursor: pointer;
-    transition: color 0.2s;
-    border: none;
-    background: none;
-    padding: 0;
-}
-
-.nav-link:hover { color: #dc2626; }
-.nav-link.active { color: #dc2626; }
-
 /* ── HERO ── */
 .hero {
     position: relative;
     z-index: 1;
-    text-align: center;
     padding: 56px 24px 40px;
-    border-bottom: 1px solid rgba(139,0,0,0.35);
+    border-bottom: 1px solid rgba(139, 0, 0, 0.35);
 }
 
 .hero::after {
@@ -90,22 +31,18 @@ body {
 
 .ornament {
     font-size: 1.4rem;
-    color: #8b0000;
-    letter-spacing: 0.5rem;
-    display: block;
     margin-bottom: 12px;
-    opacity: 0.8;
     animation: fadeIn 1s ease forwards;
 }
 
 .hero-title {
-    font-family: 'Metamorphous', serif;
+    font-family: var(--font-magic);
     font-size: clamp(2.2rem, 5vw, 4rem);
     font-weight: 400;
     color: #fff;
     text-shadow:
-        0 0 40px rgba(220,38,38,0.6),
-        0 0 80px rgba(139,0,0,0.3),
+        0 0 40px rgba(220, 38, 38, 0.6),
+        0 0 80px rgba(139, 0, 0, 0.3),
         2px 2px 0px #1a0000;
     line-height: 1.1;
     letter-spacing: 0.06em;
@@ -114,17 +51,17 @@ body {
 }
 
 .hero-title-accent {
-    color: #dc2626;
+    color: var(--red-main);
     text-shadow:
-        0 0 30px rgba(220,38,38,0.9),
-        0 0 60px rgba(220,38,38,0.4);
+        0 0 30px rgba(220, 38, 38, 0.9),
+        0 0 60px rgba(220, 38, 38, 0.4);
 }
 
 .hero-subtitle {
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-ui);
     font-size: 0.85rem;
     letter-spacing: 0.45em;
-    color: #6b7280;
+    color: var(--text-dim);
     text-transform: uppercase;
     margin-top: 14px;
     animation: fadeIn 1.2s ease forwards;
@@ -154,55 +91,45 @@ body {
     height: 8px;
     background: #dc2626;
     transform: rotate(45deg);
-    box-shadow: 0 0 8px rgba(220,38,38,0.8);
+    box-shadow: 0 0 8px rgba(220, 38, 38, 0.8);
 }
 
 /* ── MAIN CONTENT ── */
 .content {
     position: relative;
     z-index: 1;
-    max-width: 1200px;
-    margin: 0 auto;
     padding: 40px 24px 60px;
 }
 
 /* ── SECTION HEADER ── */
 .section-header {
-    display: flex;
-    align-items: center;
     gap: 14px;
     margin-bottom: 28px;
 }
 
 .section-title {
-    font-family: 'Cinzel', serif;
     font-size: 0.75rem;
     letter-spacing: 0.4em;
     text-transform: uppercase;
-    color: #9ca3af;
+    color: var(--text-muted);
     white-space: nowrap;
 }
 
 .section-line {
-    flex: 1;
-    height: 1px;
-    background: linear-gradient(90deg, rgba(139,0,0,0.5), transparent);
+    background: linear-gradient(90deg, rgba(139, 0, 0, 0.5), transparent);
 }
 
 /* ── STATS ROW ── */
 .stats-row {
-    display: grid;
     grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
     gap: 16px;
-    margin-bottom: 48px;
 }
 
 .stat-card {
-    background: rgba(255,255,255,0.02);
-    border: 1px solid rgba(139,0,0,0.25);
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(139, 0, 0, 0.25);
     border-radius: 4px;
     padding: 20px;
-    text-align: center;
     transition: border-color 0.3s, background 0.3s;
     position: relative;
     overflow: hidden;
@@ -211,7 +138,9 @@ body {
 .stat-card::before {
     content: '';
     position: absolute;
-    top: 0; left: 0; right: 0;
+    top: 0;
+    left: 0;
+    right: 0;
     height: 2px;
     background: linear-gradient(90deg, transparent, #8b0000, transparent);
     opacity: 0;
@@ -219,27 +148,27 @@ body {
 }
 
 .stat-card:hover {
-    border-color: rgba(220,38,38,0.5);
-    background: rgba(139,0,0,0.06);
+    border-color: rgba(220, 38, 38, 0.5);
+    background: rgba(139, 0, 0, 0.06);
 }
 
-.stat-card:hover::before { opacity: 1; }
+.stat-card:hover::before {
+    opacity: 1;
+}
 
 .stat-value {
-    font-family: 'Cinzel Decorative', serif;
+    font-family: var(--font-display);
     font-size: 2rem;
     font-weight: 700;
-    color: #dc2626;
-    display: block;
-    text-shadow: 0 0 20px rgba(220,38,38,0.4);
+    color: var(--red-main);
+    text-shadow: 0 0 20px rgba(220, 38, 38, 0.4);
 }
 
 .stat-label {
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-ui);
     font-size: 0.65rem;
     letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: #6b7280;
+    color: var(--text-dim);
     margin-top: 4px;
     display: block;
 }
@@ -253,8 +182,8 @@ body {
 }
 
 .character-card {
-    background: rgba(15,13,13,0.9);
-    border: 1px solid rgba(80,80,80,0.3);
+    background: rgba(15, 13, 13, 0.9);
+    border: 1px solid rgba(80, 80, 80, 0.3);
     border-radius: 6px;
     overflow: hidden;
     transition: transform 0.25s ease, border-color 0.25s, box-shadow 0.25s;
@@ -264,8 +193,8 @@ body {
 
 .character-card:hover {
     transform: translateY(-4px);
-    border-color: rgba(220,38,38,0.45);
-    box-shadow: 0 12px 40px rgba(139,0,0,0.25), 0 0 0 1px rgba(220,38,38,0.1);
+    border-color: rgba(220, 38, 38, 0.45);
+    box-shadow: 0 12px 40px rgba(139, 0, 0, 0.25), 0 0 0 1px rgba(220, 38, 38, 0.1);
 }
 
 .card-top {
@@ -275,7 +204,7 @@ body {
 
 .card-class-badge {
     display: inline-block;
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-ui);
     font-size: 0.6rem;
     letter-spacing: 0.3em;
     text-transform: uppercase;
@@ -286,7 +215,7 @@ body {
 }
 
 .card-name {
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-ui);
     font-size: 1.1rem;
     font-weight: 700;
     color: #f3f4f6;
@@ -295,10 +224,10 @@ body {
 }
 
 .card-race {
-    font-family: 'IM Fell English', serif;
+    font-family: var(--font-body);
     font-style: italic;
     font-size: 0.85rem;
-    color: #6b7280;
+    color: var(--text-dim);
 }
 
 .card-level-wrap {
@@ -309,17 +238,17 @@ body {
 }
 
 .card-level {
-    font-family: 'Cinzel Decorative', serif;
+    font-family: var(--font-display);
     font-size: 1.4rem;
     font-weight: 700;
-    color: #dc2626;
-    text-shadow: 0 0 15px rgba(220,38,38,0.5);
+    color: var(--red-main);
+    text-shadow: 0 0 15px rgba(220, 38, 38, 0.5);
     line-height: 1;
     display: block;
 }
 
 .card-level-label {
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-ui);
     font-size: 0.5rem;
     letter-spacing: 0.25em;
     text-transform: uppercase;
@@ -329,8 +258,7 @@ body {
 }
 
 .card-divider {
-    height: 1px;
-    background: linear-gradient(90deg, rgba(139,0,0,0.4), transparent);
+    background: linear-gradient(90deg, rgba(139, 0, 0, 0.4), transparent);
     margin: 0 20px;
 }
 
@@ -338,26 +266,26 @@ body {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1px;
-    background: rgba(255,255,255,0.04);
+    background: rgba(255, 255, 255, 0.04);
     margin-top: 1px;
 }
 
 .card-stat {
     padding: 12px 16px;
-    background: rgba(15,13,13,0.9);
+    background: rgba(15, 13, 13, 0.9);
     text-align: center;
 }
 
 .card-stat-val {
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-ui);
     font-size: 1.1rem;
     font-weight: 600;
-    color: #e5e7eb;
+    color: var(--text-main);
     display: block;
 }
 
 .card-stat-key {
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-ui);
     font-size: 0.55rem;
     letter-spacing: 0.3em;
     text-transform: uppercase;
@@ -368,44 +296,43 @@ body {
 
 .card-footer {
     padding: 12px 20px;
-    display: flex;
     justify-content: space-between;
     align-items: center;
-    border-top: 1px solid rgba(255,255,255,0.04);
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
 }
 
 .card-action {
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-ui);
     font-size: 0.6rem;
     letter-spacing: 0.25em;
     text-transform: uppercase;
     color: #4b5563;
     background: none;
     border: none;
-    cursor: pointer;
     padding: 4px 0;
-    transition: color 0.2s;
 }
 
-.card-action:hover { color: #dc2626; }
+.card-action:hover {
+    color: var(--red-main);
+}
 
 .card-action.primary {
-    color: #8b0000;
-    border: 1px solid rgba(139,0,0,0.4);
+    color: var(--red-dark);
+    border: 1px solid rgba(139, 0, 0, 0.4);
     padding: 4px 12px;
     border-radius: 2px;
     transition: background 0.2s, color 0.2s;
 }
 
 .card-action.primary:hover {
-    background: rgba(139,0,0,0.2);
-    color: #dc2626;
+    background: rgba(139, 0, 0, 0.2);
+    color: var(--red-main);
 }
 
 /* ── ADD CHARACTER CARD ── */
 .add-card {
-    background: rgba(15,13,13,0.5);
-    border: 1px dashed rgba(139,0,0,0.3);
+    background: rgba(15, 13, 13, 0.5);
+    border: 1px dashed rgba(139, 0, 0, 0.3);
     border-radius: 6px;
     display: flex;
     flex-direction: column;
@@ -418,25 +345,25 @@ body {
 }
 
 .add-card:hover {
-    border-color: rgba(220,38,38,0.5);
-    background: rgba(139,0,0,0.05);
+    border-color: rgba(220, 38, 38, 0.5);
+    background: rgba(139, 0, 0, 0.05);
 }
 
 .add-icon {
     width: 40px;
     height: 40px;
-    border: 1px solid rgba(139,0,0,0.5);
+    border: 1px solid rgba(139, 0, 0, 0.5);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1.2rem;
-    color: #8b0000;
+    color: var(--red-dark);
     transition: box-shadow 0.3s;
 }
 
 .add-card:hover .add-icon {
-    box-shadow: 0 0 20px rgba(220,38,38,0.3);
+    box-shadow: 0 0 20px rgba(220, 38, 38, 0.3);
 }
 
 .add-card-img {
@@ -447,20 +374,9 @@ body {
 }
 
 .add-label {
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-ui);
     font-size: 0.65rem;
     letter-spacing: 0.35em;
     text-transform: uppercase;
     color: #4b5563;
-}
-
-/* ── ANIMATIONS ── */
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-@keyframes fadeSlideDown {
-    from { opacity: 0; transform: translateY(-16px); }
-    to { opacity: 1; transform: translateY(0); }
 }

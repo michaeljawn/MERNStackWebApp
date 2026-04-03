@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { login } from "../utils/auth";
+import "../styles/common.css";
 import "../styles/Login.css";
 
 function Login() {

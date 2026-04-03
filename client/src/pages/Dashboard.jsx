@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { logout } from "../utils/auth";
+import { logout, checkLogin } from "../utils/auth";
+import "../styles/common.css";
 import "../styles/Dashboard.css";
 import character from "../assets/character-add.svg";
 
@@ -8,6 +9,44 @@ function Dashboard() {
     const navigate = useNavigate();
     const [characters, setCharacters] = useState([]);
     const [campaigns, setCampaigns] = useState([]);
+    const [isAdmin, setIsAdmin] = useState(false);
+
+    useEffect(() => {
+        // CHANGES THE DISPLAY
+        loadCharacters();
+        loadCampaigns();
+        loadAuth();
+    }, []);
+
+    async function loadAuth() {
+        const auth = await checkLogin();
+        setIsAdmin(!!auth.isAdmin);
+    }
+
+    // Load characters for adding to campaigns NOT DONE YETT
+    async function loadCharacters() {
+        try {
+            const res = await fetch("http://localhost:8080/characters", { credentials: "include" });
+            if (res.ok) {
+                const data = await res.json();
+                setCharacters(data);
+            }
+        } catch (err) {
+            console.log("Error fetching characters:", err);
+        }
+    }
+
+    async function loadCampaigns() {
+        try {
+            const res = await fetch("http://localhost:8080/campaigns", { credentials: "include" });
+            if (res.ok) {
+                const data = await res.json();
+                setCampaigns(data);
+            }
+        } catch (err) {
+            console.log("Error fetching campaigns:", err);
+        }
+    }
 
     async function handleLogout() {
         await logout();
@@ -46,6 +85,9 @@ function Dashboard() {
                     <li><button className="nav-link active">Characters</button></li>
                     <li><button className="nav-link" onClick={() => navigate("/campaigns")}>Campaign</button></li>
                     <li><button className="nav-link">Spells</button></li>
+                    {isAdmin && (
+                        <li><button className="nav-link" onClick={() => navigate("/admin")}>Admin</button></li>
+                    )}
                     <li><button className="nav-link" onClick={handleLogout}>Logout</button></li>
                 </ul>
             </nav>

@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { logout } from "../utils/auth";
-import "../styles/CharacterSheetCreator.css";
+import { logout, checkLogin } from "../utils/auth";
+import "../styles/common.css";
+import "../styles/Campaigns.css";
 
 const SETTINGS = [
   "Forgotten Realms",
@@ -23,6 +24,8 @@ function Campaigns() {
   const [noteInput, setNoteInput] = useState("");
   const [message, setMessage] = useState("");
   const [joinCodeInput, setJoinCodeInput] = useState("");
+  const [characters, setCharacters] = useState([]);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   // Create form state
   const [form, setForm] = useState({
@@ -37,8 +40,16 @@ function Campaigns() {
   const [editForm, setEditForm] = useState({});
 
   useEffect(() => {
+    //CHANGES THE DISPLAY
     loadCampaigns();
+    loadCharacters();
+    loadAuth();
   }, []);
+
+  const loadAuth = async () => {
+    const auth = await checkLogin();
+    setIsAdmin(!!auth.isAdmin);
+  };
 
   async function handleLogout() {
     await logout();
@@ -53,6 +64,15 @@ function Campaigns() {
         setCampaigns(data);
       })
       .catch((err) => console.log("Error fetching campaigns:", err));
+  };
+  // Load characters for adding to campaigns NOT DONE YETT
+  const loadCharacters = () => {
+    fetch("http://localhost:8080/characters", { credentials: "include" })
+      .then((res) => res.json())
+      .then((data) => {
+        setCharacters(data);
+      })
+      .catch((err) => console.log("Error fetching characters:", err));
   };
 
   const handleCreate = async () => {
@@ -213,6 +233,11 @@ function Campaigns() {
           <li>
             <button className="nav-link">Spells</button>
           </li>
+          {isAdmin && (
+            <li>
+              <button className="nav-link" onClick={() => navigate("/admin")}>Admin</button>
+            </li>
+          )}
           <li>
             <button className="nav-link" onClick={handleLogout}>
               Logout
@@ -265,9 +290,11 @@ function Campaigns() {
         {/* ── LIST VIEW ── */}
         {view === "list" && (
           <>
-            <span className="section-title">Join Campaign:</span>
-            <br></br>
-            <br></br>
+            <div className="section-header">
+              <span className="section-title">Join Campaign:</span>
+              <div className="section-line"></div>
+            </div>
+
             <div className="field">
               <input
                 type="text"
@@ -280,14 +307,6 @@ function Campaigns() {
               <button className="btn-new" onClick={handleJoin}>
                 Join
               </button>
-              {message && <p className="status-msg">{message}</p>}
-            </div>
-
-            <br />
-
-            <div className="section-header">
-              <span className="section-title">Your Campaigns</span>
-              <div className="section-line"></div>
               <button
                 className="btn-new"
                 onClick={() => {
@@ -297,6 +316,16 @@ function Campaigns() {
               >
                 + New Campaign
               </button>
+              {message && <p className="status-msg">{message}</p>}
+
+            </div>
+
+            <br />
+
+            <div className="section-header">
+              <span className="section-title">Your Campaigns</span>
+              <div className="section-line"></div>
+
             </div>
 
             {campaigns.length === 0 ? (
@@ -308,7 +337,7 @@ function Campaigns() {
               <div className="campaign-grid">
                 {campaigns.map((c) => (
                   <div className="campaign-card" key={c._id}>
-                    
+
                     <div className="campaign-card-top">
                       <h3 className="campaign-name">{c.name}</h3>
                       <p className="campaign-dm">DM: {c.dmName || "Unknown"}</p>
@@ -318,14 +347,14 @@ function Campaigns() {
                     </div>
 
                     <div className="card-divider" />
-                    <h3>DESCRIPTION:</h3>
+                    <h4>DESCRIPTION:</h4>
                     <p className="campaign-desc">
                       {c.description || "No description provided."}
                     </p>
 
                     {/* JOIN CODE SECTION */}
                     <div className="card-divider" />
-                    <h3>JOIN CODE:</h3>
+                    <h4>JOIN CODE:</h4>
                     <div className="campaign-code-section">
                       <span className="code-display">
                         {c.joinCode || "N/A"}
@@ -334,7 +363,7 @@ function Campaigns() {
 
                     {/* MEMBERS LIST SECTION */}
                     <div className="card-divider" />
-                    <h3>MEMBERS:</h3>
+                    <h4>MEMBERS:</h4>
                     <div className="campaign-meta">
                       <div className="members-group">
                         <div className="members-list">
@@ -353,8 +382,8 @@ function Campaigns() {
                         </div>
                       </div>
 
-                    <div className="card-divider" />
-                    <h3>Notes:</h3>
+                      <div className="card-divider" />
+                      <h4>Notes:</h4>
                       <div className="notes-count">
                         <span>{c.sessionNotes?.length || 0}</span>
                       </div>

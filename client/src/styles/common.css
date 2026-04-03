@@ -1,0 +1,276 @@
+@import url('https://fonts.googleapis.com/css2?family=Metamorphous&family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;700&family=IM+Fell+English:ital@0;1&display=swap');
+
+:root {
+    --bg-main: #0c0b0b;
+    --bg-dark: #0a0a0a;
+    --bg-panel: rgba(31, 29, 29, 0.8);
+    --bg-input: rgba(17, 17, 17, 0.8);
+    --bg-soft: rgba(255, 255, 255, 0.02);
+
+    --text-main: #e5e7eb;
+    --text-soft: #d1d5db;
+    --text-muted: #9ca3af;
+    --text-dim: #6b7280;
+    --text-accent: #fca5a5;
+
+    --red-dark: #8b0000;
+    --red-main: #dc2626;
+    --red-glow: rgba(220, 38, 38, 0.2);
+    --border-red-soft: rgba(139, 0, 0, 0.2);
+    --border-red-mid: rgba(139, 0, 0, 0.3);
+    --border-red-strong: rgba(220, 38, 38, 0.5);
+
+    --font-body: 'IM Fell English', Georgia, serif;
+    --font-ui: 'Cinzel', serif;
+    --font-display: 'Cinzel Decorative', serif;
+    --font-magic: 'Metamorphous', serif;
+
+    --radius-sm: 4px;
+    --radius-md: 6px;
+    --radius-lg: 8px;
+
+    --transition-fast: all 0.2s ease;
+    --transition-med: all 0.3s ease;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: var(--bg-dark);
+    color: var(--text-main);
+    font-family: var(--font-body);
+    min-height: 100vh;
+}
+
+/* ── NAV ── */
+.topnav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 28px;
+    border-bottom: 1px solid rgba(139, 0, 0, 0.2);
+    background: rgba(10, 8, 8, 0.85);
+}
+
+.nav-logo {
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+}
+
+.nav-links {
+    display: flex;
+    gap: 8px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 1rem;
+    list-style: none;
+}
+
+.nav-link {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-red-soft);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-ui);
+    font-size: 0.8rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    padding: 8px 16px;
+    transition: var(--transition-fast);
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--red-main);
+    background: rgba(139, 0, 0, 0.2);
+}
+
+/* shared hero/section structure */
+.hero {
+    text-align: center;
+    border-bottom: 1px solid rgba(139, 0, 0, 0.3);
+}
+
+.ornament {
+    font-size: 1.2rem;
+    color: var(--red-dark);
+    letter-spacing: 0.5rem;
+    /* display: block; */
+    opacity: 0.8;
+}
+
+.hero-subtitle {
+    color: var(--text-muted);
+}
+
+.content {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 32px 24px;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+.section-title {
+    font-family: var(--font-ui);
+    color: var(--text-main);
+}
+
+.section-line {
+    flex: 1;
+    height: 1px;
+    background: rgba(139, 0, 0, 0.3);
+}
+
+/* shared stat cards */
+.stats-row {
+    display: grid;
+    gap: 24px;
+    margin-bottom: 48px;
+}
+
+.stat-card {
+    border-radius: var(--radius-lg);
+    text-align: center;
+}
+
+.stat-value {
+    display: block;
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--red-main);
+}
+
+.stat-label {
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+
+/* shared cards */
+.card-divider {
+    height: 1px;
+}
+
+.campaign-desc {
+    color: var(--text-soft);
+    line-height: 1.5;
+}
+
+.code-display {
+    display: inline-block;
+}
+
+.members-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.notes-count {
+    text-align: center;
+}
+
+.card-footer {
+    display: flex;
+    margin-top: 24px;
+}
+
+.card-action {
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+/* shared form building blocks */
+.field {
+    display: flex;
+    flex-direction: column;
+}
+
+.field label {
+    font-size: 0.875rem;
+}
+
+.field input,
+.field select,
+.field textarea {
+    color: var(--text-main);
+    transition: var(--transition-fast);
+}
+
+.field textarea {
+    resize: vertical;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+}
+
+.panel-title {
+    font-family: var(--font-ui);
+}
+
+.btn {
+    padding: 12px 24px;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-ui);
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    transition: var(--transition-fast);
+}
+
+.btn-new,
+.btn-save,
+.btn-cancel,
+.btn-back,
+.btn-remove {
+    margin-bottom: 32px;
+    background: rgba(31, 29, 29, 0.8);
+    border: 1px solid rgba(139, 0, 0, 0.3);
+    color: var(--text-muted);
+}
+
+.btn-back:hover {
+    border-color: var(--red-main);
+    color: var(--text-accent);
+}
+
+/* shared animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeSlideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-16px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
