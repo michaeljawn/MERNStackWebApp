@@ -145,8 +145,14 @@ body {
 }
 
 .stat-card {
-    border-radius: var(--radius-lg);
+    background: var(--bg-soft);
+    border: 1px solid rgba(139, 0, 0, 0.25);
+    border-radius: 4px;
+    padding: 20px;
     text-align: center;
+    transition: border-color 0.3s, background 0.3s;
+    position: relative;
+    overflow: hidden;
 }
 
 .stat-value {
@@ -224,6 +230,13 @@ body {
 
 .panel-title {
     font-family: var(--font-ui);
+}
+
+
+button {
+    background: var(--red-glow);
+    border: none;
+    color: var(--red-main);
 }
 
 .btn {

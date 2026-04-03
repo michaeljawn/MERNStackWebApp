@@ -67,18 +67,6 @@ button {
     color: var(--text-main);
 }
 
-button {
-    background: var(--red-main);
-    border: none;
-    color: var(--text-main);
-    border-radius: var(--radius-sm);
-    transition: var(--transition-fast);
-}
-
-button:hover {
-    background: var(--red-dark);
-}
-
 #login-button,
 #add-user-button {
     margin-bottom: 24px;

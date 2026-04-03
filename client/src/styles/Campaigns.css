@@ -1,9 +1,11 @@
 /* ── PAGE WRAPPER ── */
-.campaigns-page {
+.characterCreator {
     min-height: 100vh;
-    background: var(--bg-main);
-    color: var(--text-main);
-    font-family: var(--font-body);
+    background:
+        radial-gradient(ellipse at 50% 0%, rgba(139, 0, 0, 0.15) 0%, transparent 60%),
+        #0c0b0b;
+    color: #e5e7eb;
+    font-family: 'IM Fell English', Georgia, serif;
     padding-bottom: 60px;
 }
 
@@ -14,14 +16,6 @@
 
 .ornament {
     margin-bottom: 10px;
-}
-
-.hero-title {
-    font-family: var(--font-display);
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: var(--text-main);
-    margin-bottom: 8px;
 }
 
 .hero-title-accent {
@@ -42,14 +36,6 @@
 .stats-row {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }
-
-.stat-card {
-    background: rgba(31, 29, 29, 0.8);
-    border: 1px solid rgba(139, 0, 0, 0.2);
-    padding: 24px;
-}
-
-
 
 .stat-label {
     font-size: 0.875rem;
@@ -78,16 +64,21 @@
 }
 
 .campaign-card {
-    background: rgba(31, 29, 29, 0.8);
-    border: 1px solid rgba(139, 0, 0, 0.2);
-    border-radius: 8px;
+    background: var(--bg-soft);
+    border: 1px solid rgba(139, 0, 0, 0.25);
+    border-radius: 6px;
     padding: 24px;
-    transition: var(--transition-fast);
+    margin-bottom: 25px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s ease, border-color 0.2s ease;
+    position: relative;
+    overflow: hidden;
 }
 
 .campaign-card:hover {
-    border-color: rgba(139, 0, 0, 0.4);
-    background: rgba(31, 29, 29, 0.9);
+    border-color: var(--border-red-strong);
+    transform: translateY(-2px);
+    background: rgba(139, 0, 0, 0.03);
 }
 
 .campaign-name {
@@ -135,7 +126,6 @@
     padding: 10px 20px;
     border-radius: 4px;
     border: 1px solid rgba(139, 0, 0, 0.3);
-    margin-top: 8px;
 }
 
 .member-name {
@@ -162,7 +152,7 @@
 
 .card-action {
     border: 1px solid rgba(139, 0, 0, 0.3);
-    background: rgba(31, 29, 29, 0.8);
+    background: rgba(31, 29, 29, 0.2);
     color: var(--text-muted);
     font-size: 0.875rem;
 }
@@ -174,8 +164,7 @@
 
 .card-action.primary {
     border-color: var(--red-main);
-    background: rgba(139, 0, 0, 0.2);
-    color: var(--text-accent);
+    background: var(--bg-input);
 }
 
 .card-action.primary:hover {
@@ -271,9 +260,10 @@
 
 .detail-title {
     font-family: var(--font-display);
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: 700;
     color: var(--text-main);
+    margin-top: 6px;
     margin-bottom: 8px;
 }
 
@@ -294,7 +284,7 @@
 }
 
 .detail-body {
-    background: rgba(31, 29, 29, 0.9);
+    background: var(--bg-soft);
     border: 1px solid rgba(139, 0, 0, 0.3);
     border-radius: 8px;
     padding: 32px;
@@ -377,7 +367,6 @@
 }
 
 .note-input-row {
-    display: flex;
     gap: 12px;
 }
 
@@ -431,6 +420,10 @@
     color: var(--text-muted);
 }
 
+.btn-back {
+    background-color: var(--bg-soft);
+}
+
 .btn-remove {
     padding: 6px 12px;
     background: rgba(220, 38, 38, 0.1);
@@ -455,6 +448,14 @@
     border-radius: 4px;
     padding: 16px;
     margin-top: 16px;
+}
+
+h4 {
+    font-size: 1rem;
+    color: var(--text-main);
+    letter-spacing: 0.05em;
+    margin-top: 8px;
+    margin-bottom: 14px;
 }
 
 .add-character-section h4 {
@@ -494,28 +495,40 @@
 .btn-new,
 .btn-save,
 .btn-cancel {
-    border: 1px solid rgba(139, 0, 0, 0.3);
-    background: rgba(31, 29, 29, 0.8);
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    border: 1px solid var(--border-red-strong);
     color: var(--text-muted);
 }
 
 .btn-new {
     border-color: var(--red-main);
-    background: rgba(139, 0, 0, 0.2);
-    color: var(--text-accent);
+    background: rgba(139, 0, 0, 0.5);
+    color: var(--text-main);
+    letter-spacing: 0.2em;
     margin: auto;
 }
 
 .btn-new:hover,
 .btn-save:hover {
-    border-color: var(--red-main);
-    background: rgba(139, 0, 0, 0.3);
+    background: rgba(139, 0, 0, 0.75);
+    border-color: rgba(220, 38, 38, 0.8);
     color: var(--text-main);
 }
 
 .btn-cancel:hover {
     border-color: rgba(139, 0, 0, 0.5);
     color: var(--text-main);
+}
+
+.btn-save,
+.btn-new {
+    border: 1px solid var(--border-red-strong);
+    border-radius: 3px;
+    padding: 10px 28px;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
 }
 
 /* ── JOIN INPUT ── */
