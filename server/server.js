@@ -666,7 +666,132 @@ app.get("/test-character", async (req, res) => {
   res.json(result);
 });
 
-
 // -------------------------------------------------------------
+
+
+
+// GET ALL CHARACTERS FOR LOGGED IN USER
+app.get("/characters", async (req, res) => {
+  if (!db) return res.status(500).send("Database not connected");
+  if (!req.session.user) return res.status(401).send("Not logged in");
+
+  try {
+    const userId = req.session.user.id.toString();
+    const collection = db.collection("Characters");
+    
+    // find matching characters
+    const characters = await collection.find({ userId: userId }).toArray();
+    res.json(characters);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error fetching characters");
+  }
+});
+
+// GET A SINGLE CHARACTER BY ID
+app.get("/characters/:id", async (req, res) => {
+  if (!db) return res.status(500).send("Database not connected");
+  if (!req.session.user) return res.status(401).send("Not logged in");
+
+  try {
+    const collection = db.collection("Characters");
+    const character = await collection.findOne({
+      _id: new ObjectId(req.params.id),
+      userId: req.session.user.id.toString(), // ensure user is owner
+    });
+
+    if (!character) return res.status(404).send("Character not found");
+    res.json(character);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error fetching character");
+  }
+});
+
+// CREATE A NEW CHARACTER
+app.post("/characters", async (req, res) => {
+  if (!db) return res.status(500).send("Database not connected");
+  if (!req.session.user) return res.status(401).send("Not logged in");
+
+  try {
+    const characterData = req.body;
+    
+    // Auser id and data and creaton date
+    const newCharacter = {
+      ...characterData,
+      userId: req.session.user.id.toString(),
+      createdAt: new Date(),
+    };
+
+    const collection = db.collection("Characters");
+    const result = await collection.insertOne(newCharacter);
+
+    res.json({ 
+      success: true, 
+      message: "Character created", 
+      id: result.insertedId 
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error creating character");
+  }
+});
+
+//UPDATE A CHARACTER
+app.put("/characters/:id", async (req, res) => {
+  if (!db) return res.status(500).send("Database not connected");
+  if (!req.session.user) return res.status(401).send("Not logged in");
+
+  try {
+    const updates = req.body;
+    const collection = db.collection("Characters");
+
+    // remove id from updates
+    delete updates._id;
+
+    const result = await collection.updateOne(
+      {
+        _id: new ObjectId(req.params.id),
+        userId: req.session.user.id.toString(), // user checl
+      },
+      { 
+        $set: { 
+          ...updates, 
+          updatedAt: new Date() 
+        } 
+      }
+    );
+
+    if (result.matchedCount === 0) return res.status(404).send("Character not found or unauthorized");
+    res.json({ message: "Character updated successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error updating character");
+  }
+});
+
+// DELETE A CHARACTER
+app.delete("/characters/:id", async (req, res) => {
+  if (!db) return res.status(500).send("Database not connected");
+  if (!req.session.user) return res.status(401).send("Not logged in");
+
+  try {
+    const collection = db.collection("Characters");
+    const result = await collection.deleteOne({
+      _id: new ObjectId(req.params.id),
+      userId: req.session.user.id.toString(),// user check
+    });
+
+    if (result.deletedCount === 0) return res.status(404).send("Character not found");
+    res.json({ message: "Character deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error deleting character");
+  }
+});
+
+
+
+
 
 connectDB();
