@@ -790,8 +790,45 @@ app.delete("/characters/:id", async (req, res) => {
   }
 });
 
+// CREATE CHARACTER API
 
+// GET ALL SPECIES
+app.get("/data/species", async (req, res) => {
+  if (!db) return res.status(500).send("Database not connected");
+  if (!req.session.user) return res.status(401).send("Not logged in");
 
+  try {
+    const species = await db.collection("species").find({}).toArray();
+    res.json(species);
+  } catch (error) {
+    res.status(500).send("Error fetching species");
+  }
+});
 
+// GET ALL BACKGROUNDS
+app.get("/data/backgrounds", async (req, res) => {
+  if (!db) return res.status(500).send("Database not connected");
+  if (!req.session.user) return res.status(401).send("Not logged in");
+
+  try {
+    const backgrounds = await db.collection("backgrounds").find({}).toArray();
+    res.json(backgrounds);
+  } catch (error) {
+    res.status(500).send("Error fetching backgrounds");
+  }
+});
+
+// GET ALL CLASSES
+app.get("/data/classes", async (req, res) => {
+  if (!db) return res.status(500).send("Database not connected");
+  if (!req.session.user) return res.status(401).send("Not logged in");
+
+  try {
+    const classes = await db.collection("classes").find({}).toArray();
+    res.json(classes);
+  } catch (error) {
+    res.status(500).send("Error fetching classes");
+  }
+});
 
 connectDB();
