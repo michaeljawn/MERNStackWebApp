@@ -52,24 +52,24 @@ export default function CharacterSheetCreator() {
     const [size, setSize] = useState("Medium");
     const [speed, setSpeed] = useState(30);
 
-    // ── TODO: Uncomment these when backend routes are ready ──
-    // useEffect(() => {
-    //     fetch("http://localhost:8080/api/classes", { credentials: "include" })
-    //         .then(res => res.json()).then(setClasses);
-    // }, []);
-    // useEffect(() => {
-    //     if (!character_class) return;
-    //     fetch(`http://localhost:8080/api/subclasses?class=${character_class}`, { credentials: "include" })
-    //         .then(res => res.json()).then(setSubclasses);
-    // }, [character_class]);
-    // useEffect(() => {
-    //     fetch("http://localhost:8080/api/species", { credentials: "include" })
-    //         .then(res => res.json()).then(setSpecies);
-    // }, []);
-    // useEffect(() => {
-    //     fetch("http://localhost:8080/api/backgrounds", { credentials: "include" })
-    //         .then(res => res.json()).then(setBackgrounds);
-    // }, []);
+    // 
+    useEffect(() => {
+        fetch("http://localhost:8080/data/classes", { credentials: "include" })
+            .then(res => res.json()).then(setClasses);
+    }, []);
+    useEffect(() => {
+        if (!character_class) return;
+        fetch(`http://localhost:8080/data/subclasses?class=${character_class}`, { credentials: "include" })
+            .then(res => res.json()).then(setSubclasses);
+    }, [character_class]);
+    useEffect(() => {
+        fetch("http://localhost:8080/data/species", { credentials: "include" })
+            .then(res => res.json()).then(setSpecies);
+    }, []);
+    useEffect(() => {
+        fetch("http://localhost:8080/data/backgrounds", { credentials: "include" })
+            .then(res => res.json()).then(setBackgrounds);
+    }, []);
 
     // ── COMPUTED STATS ──
     const getBase = (key) => {
