@@ -16,24 +16,30 @@ Created by Michael John, Lucas Salinas, Brandon Harrison, Mary Bauta, and Austin
 
 ## Environment Setup
 
-Before running the application, you must create a `.env` file inside the `root` directory.
+Before running the application, you must create a `.env` file in the root directory with the following variables:
 
 ```
+MONGO_URI=mongodb+srv://your-username:your-password@your-cluster.mongodb.net/
+SESSION_SECRET=your-secure-session-secret-key
+```
+
+Replace the MongoDB URI with your actual MongoDB Atlas connection string and choose a secure session secret.
 
 ## Installation
 
 From the root of the project, install dependencies for both the root, client, and server:
 
-```bash
-
-# From the root
-use install.bat
+```batch
+install.bat
+```
 
 ## Running the Application
 
 From the **root** of the project, run:
 
+```batch
 run.bat
+```
 
 This file starts both the Express/Node.js backend server and the Vite React frontend concurrently.
 
@@ -46,7 +52,11 @@ This file starts both the Express/Node.js backend server and the Vite React fron
 
 ## MongoDB Collections
 
-The application connects to a MongoDB Atlas cluster using the database named **`MERNLogin`**.
+The application connects to a MongoDB Atlas cluster using the database named **`MERNLogin`**. The following collections are used:
+
+- **Users** - Stores user account information and authentication data
+- **Campaigns** - Stores D&D campaign data including DM info, party members, and session notes
+- **Characters** - Stores D&D character sheets created by users
 
 The following collections must exist:
 
