@@ -11,14 +11,12 @@ Created by Michael John, Lucas Salinas, Brandon Harrison, Mary Bauta, and Austin
 ## Prerequisites
 
 - [Node.js](https://nodejs.org/) installed
-- A MongoDB Atlas account (or access to the project cluster)
-- Git
 
 ---
 
 ## Environment Setup
 
-Before running the application, you must create a `.env` file inside the `server/` directory.
+Before running the application, you must create a `.env` file inside the `root` directory.
 
 ```
 
@@ -29,25 +27,15 @@ From the root of the project, install dependencies for both the root, client, an
 ```bash
 
 # From the root
-npm install
-
-# Then
-cd client
-npm install
-
-# Then
-cd ../server
-npm install
+use install.bat
 
 ## Running the Application
 
 From the **root** of the project, run:
 
-```bash
-npm run dev
-```
+run.bat
 
-This single command starts both the Express/Node.js backend server and the Vite React frontend concurrently.
+This file starts both the Express/Node.js backend server and the Vite React frontend concurrently.
 
 - **React frontend** — runs on: `http://localhost:5173`
 - **Express backend (API)** — runs on: `http://localhost:8080`
