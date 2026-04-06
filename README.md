@@ -18,17 +18,9 @@ Created by Michael John, Lucas Salinas, Brandon Harrison, Mary Bauta, and Austin
 
 ## Environment Setup
 
-Before running the application, you must create a `.env` file inside the `server/` directory with the following contents:
+Before running the application, you must create a `.env` file inside the `server/` directory.
 
 ```
-MONGO_URI=mongodb+srv://admin:admin@dnd-cluster.gclmvfx.mongodb.net/
-SESSION_SECRET=supersecretkey123
-
-```
-
-> ⚠️ Do not commit this file to version control. It is already listed in `.gitignore`.
-
----
 
 ## Installation
 
