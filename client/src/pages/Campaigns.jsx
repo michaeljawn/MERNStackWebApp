@@ -252,9 +252,6 @@ function Campaigns() {
           <li>
             <button className="nav-link active">Campaign</button>
           </li>
-          <li>
-            <button className="nav-link">Spells</button>
-          </li>
           {isAdmin && (
             <li>
               <button className="nav-link" onClick={() => navigate("/admin")}>Admin</button>

@@ -65,6 +65,10 @@ function Dashboard() {
         }
     };
 
+    function calculateProficiencyBonus(level) {
+        return 2+Math.floor((level-1)/4);
+    }
+
     const classColors = {
         bard: "#c084fc", wizard: "#60a5fa", rogue: "#f87171",
         fighter: "#fb923c", cleric: "#facc15", druid: "#4ade80",
@@ -84,7 +88,6 @@ function Dashboard() {
                 <ul className="nav-links">
                     <li><button className="nav-link active">Characters</button></li>
                     <li><button className="nav-link" onClick={() => navigate("/campaigns")}>Campaign</button></li>
-                    <li><button className="nav-link">Spells</button></li>
                     {isAdmin && (
                         <li><button className="nav-link" onClick={() => navigate("/admin")}>Admin</button></li>
                     )}
@@ -170,11 +173,34 @@ function Dashboard() {
                                     <span className="card-stat-val">{char.stats?.dexterity ?? "—"}</span>
                                     <span className="card-stat-key">Dexterity</span>
                                 </div>
+                                <div className="card-stat">
+                                    <span className="card-stat-val">{char.stats?.constitution ?? "—"}</span>
+                                    <span className="card-stat-key">Constitution</span>
+                                </div>
+                                <div className="card-stat">
+                                    <span className="card-stat-val">{char.stats?.intelligence ?? "—"}</span>
+                                    <span className="card-stat-key">Intelligence</span>
+                                </div>
+                                <div className="card-stat">
+                                    <span className="card-stat-val">{char.stats?.wisdom ?? "—"}</span>
+                                    <span className="card-stat-key">Wisdom</span>
+                                </div>
+                                <div className="card-stat">
+                                    <span className="card-stat-val">{char.stats?.charisma ?? "—"}</span>
+                                    <span className="card-stat-key">Charisma</span>
+                                </div>
+                                <div className="card-stat">
+                                    <span className="card-stat-val">{char.hp ?? "—"}</span>
+                                    <span className="card-stat-key">Hit Points</span>
+                                </div>
+                                <div className="card-stat">
+                                    <span className="card-stat-val">{calculateProficiencyBonus(char.level) ?? "—"}</span>
+                                    <span className="card-stat-key">Proficiency Bonus</span>
+                                </div>
                             </div>
 
                             <div className="card-footer">
                                 <button className="card-action" onClick={() => handleDelete(char._id)}>Delete</button>
-                                <button className="card-action primary">View Sheet →</button>
                             </div>
                         </div>
                     ))}
