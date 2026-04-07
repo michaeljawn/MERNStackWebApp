@@ -26,6 +26,7 @@ function Campaigns() {
   const [joinCodeInput, setJoinCodeInput] = useState("");
   const [characters, setCharacters] = useState([]);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [userId, setUserId] = useState(null);
 
   // Create form state
   const [form, setForm] = useState({
@@ -49,6 +50,7 @@ function Campaigns() {
   const loadAuth = async () => {
     const auth = await checkLogin();
     setIsAdmin(!!auth.isAdmin);
+    setUserId(auth.userId);
   };
 
   async function handleLogout() {
@@ -139,10 +141,29 @@ function Campaigns() {
           prev.map((c) => (c._id === updated._id ? updated : c)),
         );
         setEditing(false);
+        loadCampaigns(); // Refresh the campaigns list
       }
     } catch (err) {
       console.log("Error updating campaign:", err);
     }
+  };
+
+  const addCharacter = (charId) => {
+    if (!charId) return;
+    const char = characters.find(c => c._id === charId);
+    if (char && !editForm.characters.some(ec => ec._id === char._id)) {
+      setEditForm(prev => ({
+        ...prev,
+        characters: [...prev.characters, { _id: char._id, name: char.name }]
+      }));
+    }
+  };
+
+  const removeCharacter = (idx) => {
+    setEditForm(prev => ({
+      ...prev,
+      characters: prev.characters.filter((_, i) => i !== idx)
+    }));
   };
 
   const handleAddNote = async () => {
@@ -185,6 +206,7 @@ function Campaigns() {
       dmName: campaign.dmName,
       description: campaign.description,
       setting: campaign.setting,
+      characters: campaign.characters ? campaign.characters.map(c => typeof c === 'string' ? { _id: c, name: characters.find(ch => ch._id === c)?.name || 'Unknown' } : { _id: c._id, name: c.name }) : [],
     });
     setEditing(false);
     setView("detail");
@@ -371,7 +393,6 @@ function Campaigns() {
                             c.members.map((m, idx) => (
                               <span key={idx} className="member-name">
                                 {m.username}
-                                {idx < c.members.length - 1 ? ", " : ""}
                               </span>
                             ))
                           ) : (
@@ -381,7 +402,25 @@ function Campaigns() {
                           )}
                         </div>
                       </div>
-
+                      <div className="card-divider" />
+                      <h4>CHARACTERS:</h4>
+                      <div className="campaign-meta">
+                        <div className="members-group">
+                          <div className="members-list">
+                            {c.characters && c.characters.length > 0 ? (
+                              c.characters.map((char, idx) => (
+                                <span key={idx} className="member-name">
+                                  {char.name}
+                                </span>
+                              ))
+                            ) : (
+                              <span className="no-characters">
+                                No characters added yet
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
                       <div className="card-divider" />
                       <h4>Notes:</h4>
                       <div className="notes-count">
@@ -530,12 +569,14 @@ function Campaigns() {
                     </button>
                   </>
                 ) : (
-                  <button
-                    className="card-action primary"
-                    onClick={() => setEditing(true)}
-                  >
-                    Edit Campaign
-                  </button>
+                  (selected.userId === userId || (selected.members && selected.members.some(m => m.id === userId))) && (
+                    <button
+                      className="card-action primary"
+                      onClick={() => setEditing(true)}
+                    >
+                      Edit Campaign
+                    </button>
+                  )
                 )}
               </div>
             </div>
@@ -559,6 +600,34 @@ function Campaigns() {
                   <p className="detail-text">
                     {selected.description || "No description provided."}
                   </p>
+                )}
+              </section>
+
+              <section className="detail-section">
+                <h3 className="panel-title">Character</h3>
+                <div className="characters-list">
+                  {(editing ? editForm.characters : selected.characters) && (editing ? editForm.characters : selected.characters).length > 0 ? (
+                    (editing ? editForm.characters : selected.characters).map((char, idx) => (
+                      <div key={idx} className="character-item">
+                        <span className="character-name">{char.name}</span>
+                        {editing && <button className="remove-btn" onClick={() => removeCharacter(idx)}>×</button>}
+                      </div>
+                    ))
+                  ) : (
+                    <span className="no-characters">
+                      No characters added yet
+                    </span>
+                  )}
+                </div>
+                {editing && (
+                  <div className="add-character">
+                    <select onChange={(e) => { addCharacter(e.target.value); e.target.value = ''; }}>
+                      <option value="">Add character...</option>
+                      {characters.filter(c => !(editing ? editForm.characters : selected.characters).some(ec => ec._id === c._id)).map(c => (
+                        <option key={c._id} value={c._id}>{c.name}</option>
+                      ))}
+                    </select>
+                  </div>
                 )}
               </section>
 

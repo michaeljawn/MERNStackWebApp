@@ -36,16 +36,17 @@ export async function checkLogin() {
         });
 
         if (!response.ok) {
-            return { loggedIn: false, isAdmin: false };
+            return { loggedIn: false, isAdmin: false, userId: null };
         }
 
         const data = await response.json();
         return {
             loggedIn: data.loggedIn,
             isAdmin: data.isAdmin,
+            userId: data.user ? data.user.id : null,
         };
     } catch (error) {
-        return { loggedIn: false, isAdmin: false };
+        return { loggedIn: false, isAdmin: false, userId: null };
     }
 }
 

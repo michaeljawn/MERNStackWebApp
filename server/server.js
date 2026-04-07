@@ -255,6 +255,7 @@ app.post("/campaigns", async (req, res) => {
       setting: setting || "",
       sessionNotes: [],
       members: [{ id: userId, username: username }],
+      characters: [],
       createdAt: new Date(),
     });
 
@@ -276,14 +277,17 @@ app.put("/campaigns/:id", async (req, res) => {
   if (!req.session.user) return res.status(401).send("Not logged in");
 
   try {
-    const { name, dmName, description, setting, sessionNotes, partyMembers } =
+    const { name, dmName, description, setting, sessionNotes, partyMembers, characters } =
       req.body;
     const collection = db.collection("Campaigns");
 
     const result = await collection.updateOne(
       {
         _id: new ObjectId(req.params.id),
-        userId: req.session.user.id.toString(),
+        $or: [
+          { userId: req.session.user.id.toString() },
+          { "members.id": req.session.user.id.toString() }
+        ]
       },
       {
         $set: {
@@ -293,6 +297,7 @@ app.put("/campaigns/:id", async (req, res) => {
           ...(setting !== undefined && { setting }),
           ...(sessionNotes !== undefined && { sessionNotes }),
           ...(partyMembers !== undefined && { partyMembers }),
+          characters,
           updatedAt: new Date(),
         },
       },
@@ -756,7 +761,7 @@ app.get("/data/species", async (req, res) => {
   try {
     const rawSpecies = await db.collection("species").find({}).toArray();
     const cleanSpecies = rawSpecies.map(doc => doc.species);
-    
+
     res.json(cleanSpecies);
   } catch (error) {
     res.status(500).send("Error fetching species");
@@ -769,7 +774,7 @@ app.get("/data/backgrounds", async (req, res) => {
   try {
     const rawBackgrounds = await db.collection("backgrounds").find({}).toArray();
     const cleanBackgrounds = rawBackgrounds.map(doc => doc.background);
-    
+
     res.json(cleanBackgrounds);
   } catch (error) {
     res.status(500).send("Error fetching backgrounds");
@@ -781,12 +786,12 @@ app.get("/data/classes", async (req, res) => {
   if (!db) return res.status(500).send("Database not connected");
   try {
     const rawClasses = await db.collection("classes").find({}).toArray();
-    
+
     // Flatten array of classes s
-    const flattened = rawClasses.flatMap(doc => 
+    const flattened = rawClasses.flatMap(doc =>
       doc.class.filter(c => c.source === "XPHB")
     );
-    
+
     res.json(flattened);
   } catch (error) {
     res.status(500).send("Error fetching classes");
