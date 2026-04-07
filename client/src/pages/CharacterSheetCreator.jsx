@@ -22,7 +22,7 @@ const STAT_LABELS = {
   charisma: "CHA",
 };
 const SIZE_OPTIONS = ["Tiny", "Small", "Medium", "Large", "Huge", "Gargantuan"];
-const HP_METHODS = ["Average", "Roll", "Manual"];
+const HP_METHODS = ["Average", "Manual"];
 const ASSIGN_METHODS = ["Standard Array", "Point Buy", "Manual Entry"];
 
 export default function CharacterSheetCreator() {
@@ -30,6 +30,7 @@ export default function CharacterSheetCreator() {
 
   // ── IDENTITY ──
   const [character_name, setCharacterName] = useState("");
+  const [character_level, setCharacterLevel] = useState(1);
   const [character_class, setCharacterClass] = useState("");
   const [character_subclass, setCharacterSubclass] = useState("");
   const [character_species, setCharacterSpecies] = useState("");
@@ -56,6 +57,31 @@ export default function CharacterSheetCreator() {
     wisdom: null,
     charisma: null,
   });
+
+  // possible character levels 
+  const [levels, setLevels] = useState([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18, 19, 20])
+
+  // skills
+  const character_skills = [
+    { "name" : "athletics", "proficient": false },
+    { "name" : "acrobatics","proficient": false },
+    { "name" : "sleightofhand","proficient": false },
+    { "name" : "stealth","proficient": false },
+    { "name" : "arcana","proficient": false },
+    { "name" : "history","proficient": false },
+    { "name" : "investigation","proficient": false },
+    { "name" : "nature","proficient": false },
+    { "name" : "religion","proficient": false },
+    { "name" : "animalhandling","proficient": false },
+    { "name" : "insight","proficient": false },
+    { "name" : "medicine","proficient": false },
+    { "name" : "perception","proficient": false },
+    { "name" : "survival","proficient": false },
+    { "name" : "deception","proficient": false },
+    { "name" : "intimidation","proficient": false },
+    { "name" : "performance","proficient": false },
+    { "name" : "persuasion","proficient": false }
+    ]
 
   // +2 / +1 bonuses from species — user picks which stats get them
   const [bonusPlus2, setBonusPlus2] = useState(null); // statKey
@@ -158,8 +184,20 @@ export default function CharacterSheetCreator() {
     const conTotal = getTotal("constitution");
     if (conTotal === "—") return "?";
     const conMod = Math.floor((conTotal - 10) / 2);
-    return 8 + conMod; // assuming d8 hit die, level 1
+    console.log("Selected Class:" + selectedClass);
+    const hitDiceNumber = selectedClass.hd.faces
+    return (hitDiceNumber + conMod) + (Math.floor(1+(hitDiceNumber/2)) * (character_level-1));
   };
+
+  // skill proficiency updater
+  function updateSkillProficiencies(skillProficiences) {
+    for (let i = 0; i < 18; i++) {
+      for (let j = 0; j < skillProficiences.length; j++){
+        if (character_skills[i].name == skillProficiences[j])
+          character_skills[i].proficient = true;
+      }
+    }
+  }
 
   // ── PAGES ──
   const pages = [
@@ -195,6 +233,7 @@ export default function CharacterSheetCreator() {
 const handleSaveCharacter = async () => {
   const characterData = {
     name: character_name,
+    level: character_level,
     class: character_class,
     subclass: character_subclass,
     species: character_species,
@@ -324,6 +363,23 @@ const handleSaveCharacter = async () => {
                     {classes.map((c) => (
                       <option key={c.name} value={c.name}>
                         {c.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="field">
+                  <label>Choose Level</label>
+
+                  <select
+                    value={character_level}
+                    onChange={(e) => {
+                      setCharacterLevel(e.target.value);
+                    }}
+                  >
+                    <option value="">— Select Character Level —</option>
+                    {levels.map((c) => (
+                      <option key={c} value={c}>
+                        {c}
                       </option>
                     ))}
                   </select>
@@ -552,6 +608,7 @@ const handleSaveCharacter = async () => {
 
           {<br />}
           {selectedBackground.skillProficiences?.length > 0 && (
+            updateSkillProficiencies(selectedBackground.skillProficiences),
             <p>
               <strong>Skill Proficiencies:</strong>{" "}
               {selectedBackground.skillProficiences.join(", ")}
@@ -700,6 +757,7 @@ const handleSaveCharacter = async () => {
                               onChange={() =>
                                 setBonusPlus2(bonusPlus2 === k ? null : k)
                               }
+                              disabled={bonusPlus1 === k}
                               title="Apply +2 species bonus to this stat"
                             />
                           </td>
@@ -779,7 +837,7 @@ const handleSaveCharacter = async () => {
                       ) : hpMethod === "Average" ? (
                         avgHP()
                       ) : (
-                        "Roll dice to determine"
+                        avgHP()
                       )}
                     </span>
                   </div>
