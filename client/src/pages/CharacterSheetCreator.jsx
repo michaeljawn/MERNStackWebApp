@@ -61,8 +61,7 @@ export default function CharacterSheetCreator() {
   // possible character levels 
   const [levels, setLevels] = useState([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18, 19, 20])
 
-  // skills
-  const character_skills = [
+    const character_skills = [
     { "name" : "athletics", "proficient": false },
     { "name" : "acrobatics","proficient": false },
     { "name" : "sleightofhand","proficient": false },
@@ -184,9 +183,8 @@ export default function CharacterSheetCreator() {
     const conTotal = getTotal("constitution");
     if (conTotal === "—") return "?";
     const conMod = Math.floor((conTotal - 10) / 2);
-    console.log("Selected Class:" + selectedClass);
     const hitDiceNumber = selectedClass.hd.faces
-    return (hitDiceNumber + conMod) + (Math.floor(1+(hitDiceNumber/2)) * (character_level-1));
+    return (hitDiceNumber + conMod) + ((1+Math.floor((hitDiceNumber/2)) + conMod) * (character_level-1));
   };
 
   // skill proficiency updater
